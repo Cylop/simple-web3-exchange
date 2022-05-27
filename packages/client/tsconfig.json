@@ -1,19 +1,21 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "module": "esnext",
-    "jsx": "react",
+    "jsx": "react-jsx",
     "moduleResolution": "node",
     "baseUrl": "./src",
-    "lib": ["dom", "es5", "es6", "ESNext"],
+    "lib": ["dom", "es6", "ESNext"],
     "sourceMap": true,
     "strict": true,
     "paths": {
+      "@pages/*": ["./pages/*"],
       "~/*": ["./*"]
     },
     "typeRoots": ["node_modules/@types"],
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "plugins": ["parcel-plugin-typescript"]
 }
