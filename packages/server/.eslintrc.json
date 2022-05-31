@@ -5,7 +5,7 @@
     "node": true
   },
   "parserOptions": {
-    "ecmaVersion": 2018,
+    "ecmaVersion": "latest",
     "project": "./tsconfig.json"
   },
   "extends": ["../../.eslintrc.json", "airbnb-typescript/base"]
