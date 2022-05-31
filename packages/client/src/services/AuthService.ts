@@ -1,13 +1,12 @@
+import { Maybe } from '@metamask/providers/dist/utils';
+
 const isEthereumAvailable = () => !!window.ethereum;
 
-const isConnected = (): boolean =>
-  window?.ethereum?.isConnected() ?? false;
+const isConnected = (): boolean => window?.ethereum?.isConnected() ?? false;
 
-const getAccounts = (): Promise<string[]> => {
-  if (!isConnected()) {
-    return Promise.reject(
-      new Error('MetaMask is not connected'),
-    );
+const getAccounts = (): Promise<Maybe<string[]>> => {
+  if (!window?.ethereum) {
+    return Promise.reject(new Error('MetaMask is not connected'));
   }
 
   return window.ethereum.request({
@@ -16,14 +15,9 @@ const getAccounts = (): Promise<string[]> => {
 };
 
 // 'auth' can be used as data
-const personalSign = (
-  data: string,
-  address: string,
-): Promise<string> => {
-  if (!isConnected()) {
-    return Promise.reject(
-      new Error('MetaMask is not connected'),
-    );
+const personalSign = (data: string, address: string): Promise<Maybe<string>> => {
+  if (!window?.ethereum) {
+    return Promise.reject(new Error('MetaMask is not connected'));
   }
 
   return window.ethereum.request({
@@ -32,11 +26,22 @@ const personalSign = (
   });
 };
 
+const ecRecover = (data: string, signature: string): Promise<Maybe<string>> => {
+  if (!window?.ethereum) {
+    return Promise.reject(new Error('MetaMask is not connected'));
+  }
+  return window.ethereum.request({
+    method: 'eth_ecRecover',
+    params: [data, signature],
+  });
+};
+
 const AuthService = {
   isEthereumAvailable,
   isConnected,
   getAccounts,
   personalSign,
+  ecRecover,
 };
 
 export default AuthService;

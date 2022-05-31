@@ -1,12 +1,5 @@
-import {
-  Button,
-  Heading,
-  Paragraph,
-} from 'grommet';
-import {
-  getAccounts,
-  personalSign,
-} from '../../services/AuthService';
+import { Button, Heading, Paragraph } from 'grommet';
+import AuthService from '../../services/AuthService';
 import { useWeb3Context } from '../../contexts/Web3Context/Web3Context';
 
 const LoginPage: React.FC = () => {
@@ -14,8 +7,10 @@ const LoginPage: React.FC = () => {
 
   const handleClick = async () => {
     if (web3Context?.account) {
-      const signature =
-        await web3Context.getSignature();
+      const signature = await web3Context.getSignature();
+      if (!signature) return;
+      const wallet = await AuthService.ecRecover('auth', signature);
+      console.log(wallet);
       console.log(signature);
     }
   };
@@ -24,19 +19,15 @@ const LoginPage: React.FC = () => {
     <>
       <Heading>Login here</Heading>
       <Paragraph>
-        Is connected?:{' '}
+        Is connected?:
         {web3Context.isLoggedIn() ? 'Yes' : 'No'}
       </Paragraph>
       <Paragraph>
-        Connected account:{' '}
+        Connected account:
         {web3Context.account ?? 'Not connected'}
       </Paragraph>
-      <Button onClick={web3Context.loadAccount}>
-        Load account
-      </Button>
-      <Button onClick={handleClick}>
-        Connect account
-      </Button>
+      <Button onClick={web3Context.loadAccount}>Load account</Button>
+      <Button onClick={handleClick}>Connect account</Button>
     </>
   );
 };

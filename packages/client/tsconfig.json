@@ -10,6 +10,7 @@
     "strict": true,
     "paths": {
       "@pages/*": ["./pages/*"],
+      "@services/*": ["./services/*"],
       "~/*": ["./*"]
     },
     "typeRoots": ["node_modules/@types"],
