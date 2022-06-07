@@ -3,7 +3,7 @@ import { createContext, ReactNode, useCallback, useContext, useMemo, useReducer 
 import KeyMirror from 'keymirror';
 
 import { Maybe } from '@metamask/providers/dist/utils';
-import AuthService from '../../services/AuthService';
+import AuthService from '../../services/auth.service';
 
 const Action = KeyMirror({
   SET_ACCOUNT: null,

@@ -1,6 +1,6 @@
 {
   "eslint.workingDirectories": ["packages/server", "packages/client"],
-  "files.eol": "\r\n",
+  "files.eol": "\n",
   "editor.formatOnSave": true,
   "editor.formatOnSaveMode": "file"
 }

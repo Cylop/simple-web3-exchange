@@ -1,34 +1,29 @@
-import { Button, Heading, Paragraph } from 'grommet';
-import AuthService from '../../services/AuthService';
-import { useWeb3Context } from '../../contexts/Web3Context/Web3Context';
+import { useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { Button } from 'grommet';
+import AuthService from '../../services/auth.service';
+import { PageContainer } from '../../components';
 
 const LoginPage: React.FC = () => {
-  const web3Context = useWeb3Context();
-
-  const handleClick = async () => {
-    if (web3Context?.account) {
-      const signature = await web3Context.getSignature();
-      if (!signature) return;
-      const wallet = await AuthService.ecRecover('auth', signature);
-      console.log(wallet);
-      console.log(signature);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (AuthService.isAuthenticated()) {
+      navigate('/', { replace: true });
     }
-  };
+  }, []);
+
+  const handleClick = useCallback(async () => {
+    if (!AuthService.isAuthenticated()) {
+      await AuthService.login();
+      navigate('/', { replace: true });
+    }
+  }, []);
 
   return (
-    <>
-      <Heading>Login here</Heading>
-      <Paragraph>
-        Is connected?:
-        {web3Context.isLoggedIn() ? 'Yes' : 'No'}
-      </Paragraph>
-      <Paragraph>
-        Connected account:
-        {web3Context.account ?? 'Not connected'}
-      </Paragraph>
-      <Button onClick={web3Context.loadAccount}>Load account</Button>
-      <Button onClick={handleClick}>Connect account</Button>
-    </>
+    <PageContainer title="Login Page">
+      <Button primary alignSelf="start" onClick={handleClick} hoverIndicator label="Authenticate" />
+    </PageContainer>
   );
 };
 
